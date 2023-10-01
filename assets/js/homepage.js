@@ -120,27 +120,25 @@ var getForecast = function (latitude, longitude){
         console.log(response);
         response.json().then(function (data) {
           console.log(data);
-          weatherContainerEl.style.display = "flex";
-          console.log("here");
           for (var i=0; i<41; i+=8)
           {
-            var Container = document.createElement("div");
+            var container = document.createElement("div");
             var date = document.createElement("h3");
             var temp = document.createElement("p");
             var wind = document.createElement("p");
             var humidity = document.createElement("p");
             var icon = document.createElement("img");
             var dateCode = data.list[i].dt;
-            console.log(dateCode);
-            // if(i=0)
-            // {
-
-            // }else{
-
-            // }
+            if(i == 0)
+            {
+              container.classList.add("container", "col-12", "col-md-12");
+              console.log("0");
+            }else{
+              container.classList.add("container", "col-md-4");
+              console.log(i);
+            }
             dateCode = dateCode * 1000;
             var dateFormat = dayjs(dateCode).format('MMM D, YYYY');
-            console.log(dateFormat)
             var iconCode = data.list[i].weather[0].icon;
             iconCode = iconCode.replace('n','d');
             icon.src = "https://openweathermap.org/img/w/"+iconCode+".png";
@@ -148,15 +146,14 @@ var getForecast = function (latitude, longitude){
             temp.textContent = "Temp : " + data.list[i].main.temp + "°C";
             wind.textContent = "Wind : " + data.list[i].wind.speed + " KM/H";
             humidity.textContent = "Humidity : " + data.list[i].main.humidity + "%";
+            
 
-
-            weatherContainerEl.appendChild(Container);
-            Container.appendChild(date);
-            Container.appendChild(icon);
-            Container.appendChild(temp);
-            Container.appendChild(wind);
-            Container.appendChild(humidity);
-            console.log(iconCode);
+            weatherContainerEl.appendChild(container);
+            container.appendChild(date);
+            container.appendChild(icon);
+            container.appendChild(temp);
+            container.appendChild(wind);
+            container.appendChild(humidity);
           }
         });
       } else {
