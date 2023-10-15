@@ -7,7 +7,8 @@ var searchHistory = document.querySelector('#search-history');
 
 var lat;
 var lon;
-var cityList =[];
+var cityList =['kiwi'];
+
 function init() {
   cityList = localStorage.getItem("cityList")||"";
   if (cityList){
@@ -36,6 +37,7 @@ var addToList = function (cityName){
           localStorage.setItem("cityList",JSON.stringify(cityList));
         }else{
           cityList.push(cityName);
+          console.log(cityList)
           localStorage.setItem("cityList",JSON.stringify(cityList));
           var button = document.createElement("button")
           button.classList = "btn text-uppercase";
@@ -47,7 +49,7 @@ var addToList = function (cityName){
 
 var formSubmitHandler = function (event) {
   event.preventDefault();
-
+  weatherContainerEl.textContent = "";
   var cityName = nameInputEl.value.trim();
 
   if (cityName) {
@@ -113,16 +115,17 @@ var getCordinates = function (cordinate, cityName){
 }
 
 var getForecast = function (latitude, longitude){
-  var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude+'&appid=bb1d771d7b823d782c4bd1624f7d63a5&units=metric&cnt=40';
+  var apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude+'&appid=bb1d771d7b823d782c4bd1624f7d63a5&units=metric';
   fetch(apiUrl)
     .then(function (response) {
       if (response.ok) {
         console.log(response);
         response.json().then(function (data) {
           console.log(data);
-          for (var i=0; i<41; i+=8)
+          for (var i=0; i<40; i+=7)
           {
             var container = document.createElement("div");
+            var subtitle = document.createElement("h3");
             var date = document.createElement("h3");
             var temp = document.createElement("p");
             var wind = document.createElement("p");
@@ -146,14 +149,16 @@ var getForecast = function (latitude, longitude){
             temp.textContent = "Temp : " + data.list[i].main.temp + "°C";
             wind.textContent = "Wind : " + data.list[i].wind.speed + " KM/H";
             humidity.textContent = "Humidity : " + data.list[i].main.humidity + "%";
-            
+            subtitle.textContent = "5-Day Forecast:";
 
             weatherContainerEl.appendChild(container);
+            weatherContainerEl.appendChild(subtitle);
             container.appendChild(date);
             container.appendChild(icon);
             container.appendChild(temp);
             container.appendChild(wind);
             container.appendChild(humidity);
+            container.appendChild(subtitle);
           }
         });
       } else {
@@ -161,7 +166,7 @@ var getForecast = function (latitude, longitude){
       }
     })
     .catch(function (error) {
-      alert('Unable to connect to GitHub');
+      alert('Unable to connect to Open Weather');
     });
 };
 // var getFeaturedRepos = function (language) {
