@@ -1,6 +1,8 @@
 var cityInputEl = document.querySelector('#city-input');
 var nameInputEl = document.querySelector('#city-name');
-var weatherContainerEl = document.querySelector('#weather-container');
+var weatherPresentEl = document.querySelector('#weather-container-present');
+var weatherFutureEl = document.querySelector('#weather-container-future');
+
 var citySearchTerm = document.querySelector('#city-search-term');
 var searchHistory = document.querySelector('#search-history');
 var lat;
@@ -25,7 +27,7 @@ function getSearch() {
         var clickEl = document.getElementById(buttonId);
         var clickedName = clickEl.textContent;
         getWeather(clickedName);
-        addToList(cityName);
+        addToList(clickedName);
         getSearch();
     });
      
@@ -84,7 +86,7 @@ var addToList = function (cityName) {
         var clickedName = clickEl.val();
 
         getWeather(clickedName);
-        addToList(cityName);
+        addToList(clickedName);
         getSearch();
     });
   }
@@ -93,7 +95,8 @@ var addToList = function (cityName) {
 
 var formSubmitHandler = function (event) {
   event.preventDefault();
-  weatherContainerEl.textContent = "";
+  weatherPresentEl.textContent = '';
+  weatherFutureEl.textContent = '';
   var cityName = nameInputEl.value.trim();
 
   if (cityName) {
@@ -122,7 +125,8 @@ var buttonClickHandler = function (event) {
 };
 
 var getWeather = function (city) {
-  weatherContainerEl.textContent = '';
+  weatherPresentEl.textContent = '';
+  weatherFutureEl.textContent = '';
   var apiUrl = 'https://geocode.maps.co/search?q={' + city + '}';
 
   fetch(apiUrl)
@@ -146,7 +150,7 @@ var getWeather = function (city) {
 
 var getCordinates = function (cordinate, cityName) {
   if (cordinate.length === 0) {
-    weatherContainerEl.textContent = 'No weather info found.';
+    weatherPresentEl.textContent = 'No weather info found.';
     // Without a `return` statement, the rest of this function will continue to run and perhaps throw an error if `city name` is empty
     return;
   }
@@ -169,7 +173,6 @@ var getForecast = function (latitude, longitude) {
           console.log(data);
           for (var i = 0; i < 40; i += 7) {
             var container = document.createElement("div");
-            var subtitle = document.createElement("h3");
             var date = document.createElement("h3");
             var temp = document.createElement("p");
             var wind = document.createElement("p");
@@ -177,10 +180,11 @@ var getForecast = function (latitude, longitude) {
             var icon = document.createElement("img");
             var dateCode = data.list[i].dt;
             if (i == 0) {
-              container.classList.add("container", "col-12", "col-md-12");
-              console.log("0");
+              container.classList.add("container", "col-12", "col-md-12", 'width');
+              weatherPresentEl.appendChild(container);
             } else {
-              container.classList.add("container", "col-md-4");
+              container.classList.add("container", "col-md-5");
+              weatherFutureEl.appendChild(container);
               console.log(i);
             }
             dateCode = dateCode * 1000;
@@ -192,17 +196,14 @@ var getForecast = function (latitude, longitude) {
             temp.textContent = "Temp : " + data.list[i].main.temp + "°C";
             wind.textContent = "Wind : " + data.list[i].wind.speed + " KM/H";
             humidity.textContent = "Humidity : " + data.list[i].main.humidity + "%";
-            subtitle.textContent = "5-Day Forecast:";
-
-            weatherContainerEl.appendChild(container);
-            weatherContainerEl.appendChild(subtitle);
+            
             container.appendChild(date);
             container.appendChild(icon);
             container.appendChild(temp);
             container.appendChild(wind);
             container.appendChild(humidity);
-            container.appendChild(subtitle);
           }
+          document.getElementById('five-day').style.visibility = 'visible';
         });
       } else {
         alert('Error: ' + response.statusText);
