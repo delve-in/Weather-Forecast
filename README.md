@@ -18,7 +18,7 @@ You can type in any valid city name and hit search, Which will bring up the curr
 
 ![Alt text](./assets/images/image1.png)
 
-While you are presented with the forecast the searched city name will be saved below the search button, Which is persistant and will be available wehnever you load the page again. You can click on these saved searches and it will automatically search the city and show the latest conditions.
+While you are presented with the forecast the searched city name will be saved below the search button, Which is persistant and will be available whenever you load the page again. You can click on these saved searches and it will automatically search the city and show the latest conditions.
 
 ![Alt text](./assets/images/image2.png)
 
