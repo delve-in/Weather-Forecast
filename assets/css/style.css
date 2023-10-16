@@ -1,8 +1,8 @@
 :root {
-  --primary: #F7FFF7;
-  /* --secondary: #e8eddf; */
+  --primary: #ffffff;
+  /* --secondary: #edf2f4; */
   --tertiary: #788585;
-  --light-dark: #7A7D7D;
+  --light-dark: #8A817C;
   --dark: #001514;
   --border-radius: 0.3rem;
 }
@@ -380,6 +380,10 @@ p {
   .col-md-12 {
     flex: 0 0 100%;
   }
+}
+
+.width-75{
+  width: 75%;
 }
 
 /* col-lg */
